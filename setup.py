@@ -8,7 +8,7 @@ setuptools.setup(
     url='https://github.com/ingresse/amqp-python',
     author='Ingresse',
     author_email='vitor.leal@ingresse.com',
-    license='MIT',
+    license='BSD',
     packages=setuptools.find_packages(),
     namespace_packages=['amqp'],
     install_requires=open('requirements.txt').read(),

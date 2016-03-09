@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pika
 
 
@@ -12,15 +11,19 @@ class Adapter(object):
         :param string password: Server server password
         :param string vhost: Server virutal host
         """
+        self._host = host
         self._credentials = pika.PlainCredentials(user, password)
         self._parameters = pika.ConnectionParameters(host, port, vhost, self._credentials)
 
         self.connect()
 
+    def __str__(self):
+        return '<Adapter host=%r>' % self._host
+
     def connect(self):
         """Connect usgin BlockingConnection.
         """
-        self.connection = BlockingConnection(self.connection_parameters)
+        self.connection = pika.BlockingConnection(self._parameters)
         self.channel = self.connection.channel()
 
     def close(self):
@@ -32,8 +35,12 @@ class Adapter(object):
         self.connection = None
         self.channel = None
 
-    def send(self, message):
+    def send(self, queue, message):
         """Publish the message in the queue
+
+        :param string queue: Queue name
+        :param Message message: Message to publish in the channel
         """
-        self.channel.basic_publish(message)
+        message.set_queue(queue)
+        self.channel.basic_publish(**message.get_content())
 

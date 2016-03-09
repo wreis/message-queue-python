@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-import logging
 import pika
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Publisher:
@@ -13,9 +9,12 @@ class Publisher:
         :param dictionary kwargs: Parameters to define the Queue
         """
         self.adapter = adapter
-        self.define_queue(kwargs)
+        self.define_queue(**kwargs)
 
-    def define_queue(**kwargs):
+    def __str__(self):
+        return '<Publisher>'
+
+    def define_queue(self, **kwargs):
         """Define the queue configuration.
 
         :param string queue: Queue name to connect
@@ -23,21 +22,23 @@ class Publisher:
         :param bool dureble: Survive reboots of the broker
         :param bool exclusive: Only allow access by the current connection
         :param bool auto_delete: Delete after consumer cancels or disconnects
-        :param bool nowait: Do not wait for a Queue.DeclareOk
         :param bool arguments: Custom key/value arguments for the queue
         """
+        self.queue = kwargs.get('queue', 'amqp.python')
+
         self.adapter.channel.queue_declare(
-            queue       = kwargs.get('queue',       'amqp.python'),
-            passive     = kwargs.get('passive',     False),
-            durable     = kwargs.get('durable',     True),
-            exclusive   = kwargs.get('exclusive',   False),
+            queue       = self.queue,
+            passive     = kwargs.get('passive', False),
+            durable     = kwargs.get('durable', True),
+            exclusive   = kwargs.get('exclusive', False),
             auto_delete = kwargs.get('auto_delete', False),
-            nowait      = kwargs.get('nowait',      False),
-            arguments   = kwargs.get('arguments',   None),
+            arguments   = kwargs.get('arguments'),
         )
 
     def publish(self, message):
         """Publish message.
+
+        :param Message message: Message to publish in the channel
         """
-        self.adapter.send(message)
+        self.adapter.send(self.queue, message)
 

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 import pika
+
 
 class Subscriber:
     def __init__(self, adapter, **kwargs):
@@ -9,9 +9,12 @@ class Subscriber:
         :param dictionary kwargs: Parameters to define the Queue
         """
         self.adapter = adapter
-        self.define_queue(kwargs)
+        self.define_queue(**kwargs)
 
-    def define_queue(**kwargs):
+    def __str__(self):
+        return '<Subscriber>'
+
+    def define_queue(self, kwargs):
         """Define the queue configuration.
 
         :param int prefetch_count: Specifies a prefetch window in terms of whole messages
@@ -20,24 +23,22 @@ class Subscriber:
         :param bool dureble: Survive reboots of the broker
         :param bool exclusive: Only allow access by the current connection
         :param bool auto_delete: Delete after consumer cancels or disconnects
-        :param bool nowait: Do not wait for a Queue.DeclareOk
         :param bool arguments: Custom key/value arguments for the queue
         """
         self.adapter.channel.queue_declare(
-            queue       = kwargs.get('queue',       'amqp.python'),
-            passive     = kwargs.get('passive',     False),
-            durable     = kwargs.get('durable',     True),
-            exclusive   = kwargs.get('exclusive',   False),
+            queue       = kwargs.get('queue', 'amqp.python'),
+            passive     = kwargs.get('passive', False),
+            durable     = kwargs.get('durable', True),
+            exclusive   = kwargs.get('exclusive', False),
             auto_delete = kwargs.get('auto_delete', False),
-            nowait      = kwargs.get('nowait',      False),
-            arguments   = kwargs.get('arguments',   None),
+            arguments   = kwargs.get('arguments'),
         )
 
         if kwargs.get('prefetch_count'):
             self.adapter.basic_qos(prefetch_count=kwargs.get('prefetch_count'))
 
-    def get(self, worker):
-        """Get a queued message and execut a worker
+    def consume(self, worker):
+        """Get a queued message and execut a worker.
         """
         self.adapter.basic_consume(message)
 

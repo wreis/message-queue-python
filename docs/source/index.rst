@@ -1,7 +1,7 @@
-amqp-python's documentation!
-============================
+amqp-python
+===========
 
-Amqp python lib is a python client for RabbitMQ.
+AMQP python client to publish and subscribe to RabbitMQ.
 
 
 Installing amqp-python
@@ -22,8 +22,7 @@ Documentation
 
 .. automodule:: amqp
   :members:
-  :inherited-members:
-  :show-inheritance:
+  :undoc-members:
 
 
 Indices and tables
