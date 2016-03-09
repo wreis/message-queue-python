@@ -3,10 +3,10 @@ import setuptools
 setuptools.setup(
     name='amqp-python',
     version='1.0.0',
-    description='Mixin for publishing events to RabbitMQ',
+    description='RabbitMQ client',
     long_description=open('readme.md').read(),
     url='https://github.com/ingresse/amqp-python',
-    author='Vitor Leal',
+    author='Ingresse',
     author_email='vitor.leal@ingresse.com',
     license='MIT',
     packages=setuptools.find_packages(),
