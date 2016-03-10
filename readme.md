@@ -16,23 +16,23 @@ $ pip install message-queue
 
 ## Examples:
 
-  Publish a message to the queue.
+Publish a message to the queue.
 
-  ```
-  $ python examples/publisher.py
-  ```
+```
+$ python examples/publisher.py
+```
 
-  Subscribe to messages in the queue.
+Subscribe to messages in the queue.
 
-  ```
-  $ python examples/subscriber.py
-  ```
+```
+$ python examples/subscriber.py
+```
 
-  You can use the `--debug` flag to log some information
+You can use the `--debug` flag to log some information
 
-  ``
-  $ python examples/publish.py --debug
-  ```
+```
+$ python examples/publish.py --debug
+```
 
 
 ## Documentation
