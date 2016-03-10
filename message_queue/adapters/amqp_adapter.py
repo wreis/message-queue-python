@@ -50,7 +50,7 @@ class AMQPAdapter(BaseAdapter):
                 durable     = kwargs.get('durable', True),
                 exclusive   = kwargs.get('exclusive', False),
                 auto_delete = kwargs.get('auto_delete', False),
-                arguments   = kwargs.get('arguments'),
+                arguments   = kwargs.get('arguments', None),
             )
 
             if self.prefetch_count > 0:
@@ -84,7 +84,6 @@ class AMQPAdapter(BaseAdapter):
     def send(self, message):
         """Publish a message in the queue.
 
-        :param string queue: Queue name
         :param Message message: Message to publish in the channel
 
         """
@@ -142,6 +141,7 @@ class AMQPAdapter(BaseAdapter):
 
         :param Channel channel: Channel to acknowledge the message
         :param int tag: Message tag to acknowledge
+
         """
         channel.basic_ack(delivery_tag=tag)
 

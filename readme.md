@@ -13,25 +13,26 @@ $ pip install message-queue
 ## Current adapters:
   - [RabbitMQ - AMQP 0.9.1](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
 
-    - Example:
 
-      Publish a message to the queue.
+## Examples:
 
-      ```
-      $ python examples/publisher.py
-      ```
+  Publish a message to the queue.
 
-      Subscribe to messages in the queue.
+  ```
+  $ python examples/publisher.py
+  ```
 
-      ```
-      $ python examples/subscriber.py
-      ```
+  Subscribe to messages in the queue.
 
-      You can use the `--debug` flag to log some information
+  ```
+  $ python examples/subscriber.py
+  ```
 
-      ``
-      $ python examples/publish.py --debug
-      ```
+  You can use the `--debug` flag to log some information
+
+  ``
+  $ python examples/publish.py --debug
+  ```
 
 
 ## Documentation

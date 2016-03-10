@@ -4,15 +4,22 @@ sys.path.append('../')
 import message_queue
 import pika
 
-adapter = message_queue.AMQPAdapter(host='107.23.60.208')
-adapter.configurate_queue(queue='python.publish.test')
 
-publisher = message_queue.Publisher(adapter)
+if __name__ == '__main__':
+    # Instantiate the AMQP adapter with the host configuration
+    adapter = message_queue.AMQPAdapter(host='107.23.60.208')
+    # Configurate queue
+    adapter.configurate_queue(queue='python.publish.test')
 
-message = message_queue.Message({
-    'id': 12345,
-    'message': 'test publish'
-})
+    # Instantiate publisher
+    publisher = message_queue.Publisher(adapter)
 
-publisher.publish(message)
+    # Create a new message
+    message = message_queue.Message({
+        'id': 12345,
+        'message': 'test publish'
+    })
+
+    # Publish message
+    publisher.publish(message)
 
