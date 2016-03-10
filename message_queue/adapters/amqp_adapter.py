@@ -58,6 +58,9 @@ class AMQPAdapter(BaseAdapter):
             if self.prefetch_count > 0:
                 self.channel.basic_qos(prefetch_count=self.prefetch_count)
 
+            LOGGER.debug('Queue configured: queue=%r, basic_ack=%r, prefetch_count=%r',
+                         self.queue, self.basic_ack, self.prefetch_count)
+
     def connect(self):
         """Connect usgin BlockingConnection.
         """

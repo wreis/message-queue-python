@@ -1,28 +1,26 @@
-amqp-python
-===========
+message-queue
+=============
 
-AMQP python client to publish and subscribe to RabbitMQ.
+Message Qeueu python client.
 
 
-Installing amqp-python
-----------------------
+Installing message-queue
+------------------------
 
-amqp-python is available to install via pip::
+message-queue is available to install via pip::
 
-  pip inatall amqp-python
+  pip inatall message-queue
 
 
 .. toctree::
-  :glob:
-  :maxdepth: 1
+  :maxdepth: 2
 
 
 Documentation
 -------------
 
-.. automodule:: amqp
+.. automodule:: message_queue
   :members:
-  :undoc-members:
 
 
 Indices and tables

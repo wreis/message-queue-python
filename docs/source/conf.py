@@ -15,7 +15,7 @@ source_suffix = '.rst'
 source_encoding = 'utf-8-sig'
 master_doc = 'index'
 
-project = u'amqp-python'
+project = u'message-queue'
 copyright = u'2016, Ingresse'
 author = u'Ingresse'
 
@@ -31,26 +31,26 @@ todo_include_todos = False
 # -- Options for HTML output ----------------------------------------------
 html_theme = 'alabaster'
 html_static_path = ['_static']
-htmlhelp_basename = 'amqp-pythondoc'
+htmlhelp_basename = 'message-queuedoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 latex_elements = {}
 
 latex_documents = [
-    (master_doc, 'amqp-python.tex', u'amqp-python Documentation',
+    (master_doc, 'message-queue.tex', u'message-queue Documentation',
      u'Ingresse', 'manual'),
 ]
 
 # -- Options for manual page output ---------------------------------------
 man_pages = [
-    (master_doc, 'amqp-python', u'amqp-python Documentation',
+    (master_doc, 'message-queue', u'message-queue Documentation',
      [author], 1)
 ]
 
 # -- Options for Texinfo output -------------------------------------------
 texinfo_documents = [
-    (master_doc, 'amqp-python', u'amqp-python Documentation',
-     author, 'amqp-python', 'AMQP Client',
+    (master_doc, 'message-queue', u'message-queue Documentation',
+     author, 'message-queue', 'Message Queue',
      'Miscellaneous'),
 ]
 
