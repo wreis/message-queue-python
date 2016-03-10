@@ -5,10 +5,10 @@ from abc import ABCMeta, abstractmethod
 
 class BaseAdapter:
     __metaclass__ = ABCMeta
-    NAME = 'adapter'
+    __name__ = 'adapter'
 
     @abstractmethod
-    def configurate_queue(self, **kwargs):
+    def configurate_queue(self):
         """Define the queue configuration.
         """
         pass
@@ -26,7 +26,7 @@ class BaseAdapter:
         pass
 
     @abstractmethod
-    def send(self, queue, message):
+    def send(self):
         """Publish a message to the queue.
         """
         pass
@@ -38,8 +38,14 @@ class BaseAdapter:
         pass
 
     @abstractmethod
-    def consume(self, consumer):
+    def consume(self):
         """Consume message from the queue.
+        """
+        pass
+
+    @abstractmethod
+    def consume_callback(self):
+        """Callback method to execute in the consume
         """
         pass
 

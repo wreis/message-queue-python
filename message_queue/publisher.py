@@ -3,14 +3,12 @@
 
 
 class Publisher:
-    def __init__(self, adapter, **kwargs):
+    def __init__(self, adapter):
         """Create a new publisher with an Adapter instance.
 
         :param Adapter adapter: Connection Adapter
-        :param dictionary kwargs: Parameters to define the Queue
         """
         self.adapter = adapter
-        self.adapter.configurate_queue(**kwargs)
 
     def publish(self, message):
         """Publish a message message.

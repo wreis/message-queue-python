@@ -1,8 +1,6 @@
 """AMQP 0.9.1 Adapter to connect to RabbitMQ using pika
 """
-
 import pika
-import message_queue
 from message_queue import logger
 from message_queue.adapters import BaseAdapter
 
@@ -10,7 +8,7 @@ LOGGER = logger.get(__name__)
 
 
 class AMQPAdapter(BaseAdapter):
-    NAME = 'amqp'
+    __name__ = 'amqp'
 
     def __init__(self, host='localhost', port=5672, user='guest', password='guest', vhost='/'):
         """Create the connection credentials and parameters then connect.
@@ -68,9 +66,12 @@ class AMQPAdapter(BaseAdapter):
             self.connection = pika.BlockingConnection(self._parameters)
             self.channel = self.connection.channel()
 
-        except:
-            self.connect()
+            LOGGER.debug('Connected')
 
+        except Exception as e:
+            LOGGER.warning('Could not connect to host: %r', e)
+
+            self.connect()
 
     def close(self):
         """Close connection and channel.
@@ -111,13 +112,14 @@ class AMQPAdapter(BaseAdapter):
 
         return _message
 
-    def consume(self, consumer):
+    def consume(self, worker):
         """Consume message from the queue.
 
-        :param Consumer consumer:
+        :param method consumer: Method that consume the message
 
         """
-        self.channel.basic_consume(consumer.work, self.queue)
+        self._consume_worker = worker
+        self.channel.basic_consume(self.consume_callback, self.queue)
 
         try:
             self.channel.start_consuming()
@@ -125,4 +127,21 @@ class AMQPAdapter(BaseAdapter):
         except KeyboardInterrupt:
             self.channel.stop_consuming()
             self.close()
+
+    def consume_callback(self, channel, method, properties, body):
+        """Message consume callback
+
+        :param method work: Work to be executed in the callback
+
+        """
+        self._consume_worker(channel, method, properties, body)
+        self.consume_acknowledge(channel, method.delivery_tag)
+
+    def consume_acknowledge(self, channel, tag):
+        """Message acknowledge
+
+        :param Channel channel: Channel to acknowledge the message
+        :param int tag: Message tag to acknowledge
+        """
+        channel.basic_ack(delivery_tag=tag)
 

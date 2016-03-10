@@ -7,12 +7,10 @@ import pika
 adapter = message_queue.AMQPAdapter(host='107.23.60.208')
 adapter.configurate_queue(queue='python.publish.test')
 
-publisher = message_queue.Publisher(adapter)
+subscriber = message_queue.Subscriber(adapter)
 
-message = message_queue.Message({
-    'id': 12345,
-    'message': 'test publish'
-})
+def my_worker(channel, method, properties, body):
+    print body
 
-publisher.publish(message)
+subscriber.consume(my_worker)
 
