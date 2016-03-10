@@ -18,13 +18,13 @@ $ pip install message-queue
       Publish a message to the queue.
 
       ```
-      $ python examples/publish.py
+      $ python examples/publisher.py
       ```
 
       Subscribe to messages in the queue.
 
       ```
-      $ python examples/subscribe.py
+      $ python examples/subscriber.py
       ```
 
       You can use the `--debug` flag to log some information
