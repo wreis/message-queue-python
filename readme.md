@@ -1,12 +1,12 @@
-# AMQP Python Client
+# Message Queue Python
 
-AMQP python client to publish and subscribe to RabbitMQ.
+Message Queue python client.
 
 
 ## Install the lib
 
 ```
-$ pip install amqp-python
+$ pip install message_queue
 ```
 
 
