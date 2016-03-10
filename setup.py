@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='message-queue',
-    version='1.0.0',
+    version='0.1.0',
     description='Message Queue library',
     long_description=open('readme.md').read(),
     url='https://github.com/ingresse/mq-python',
