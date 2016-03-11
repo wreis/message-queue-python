@@ -7,4 +7,4 @@ codegen
 build
 dist
 docs/_build
-
+.pypirc
