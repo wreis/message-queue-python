@@ -21,16 +21,13 @@ Documentation
 -------------
 
 .. toctree::
-   :hidden:
-   :maxdepth: 2
+  :maxdepth: 1
 
-.. automodule:: message_queue
-  :members:
+  modules/index
 
 
 Indices and tables
 ------------------
 
 * :ref:`genindex`
-* :ref:`search`
 
