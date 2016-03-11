@@ -1,11 +1,13 @@
-class Subscriber:
-    """Message Queue Subscriber.
+"""Subscribe to a specific queue
+and consume the messages.
 
-    """
+"""
+
+class Subscriber:
     def __init__(self, adapter):
         """Create a new subscriber with an Adapter instance.
 
-        :param message_queue.adapters.BaseAdapter adapter: Connection Adapter
+        :param BaseAdapter adapter: Connection Adapter
 
         """
         self.adapter = adapter

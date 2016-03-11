@@ -18,7 +18,7 @@ $ pip install message-queue
 
 Publish a message to the queue.
 
-```
+```python
 import message_queue
 import pika
 
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
 Subscribe to messages in the queue.
 
-```
+```python
 import json
 
 import message_queue

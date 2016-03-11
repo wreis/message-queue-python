@@ -1,3 +1,8 @@
+"""AMQP 0.9.1 Adapter to connect to RabbitMQ using pika library.
+
+Publish and subscribe to queues and exchanges in RabbitMQ
+
+"""
 import pika
 
 from message_queue import logger
@@ -7,9 +12,6 @@ LOGGER = logger.get(__name__)
 
 
 class AMQPAdapter(BaseAdapter):
-    """AMQP 0.9.1 Adapter to connect to RabbitMQ using pika library.
-
-    """
     __name__ = 'amqp'
 
     def __init__(self, host='localhost', port=5672, user='guest', password='guest', vhost='/'):
@@ -135,9 +137,9 @@ class AMQPAdapter(BaseAdapter):
     def consume_callback(self, channel, method, properties, body):
         """Message consume callback
 
-        :param pika.channel.Channel unused_channel: The channel object
-        :param pika.Spec.Basic.Deliver: basic_deliver method
-        :param pika.Spec.BasicProperties: properties
+        :param pika.channel.Channel channel: The channel object
+        :param pika.Spec.Basic.Deliver method: basic_deliver method
+        :param pika.Spec.BasicProperties properties: properties
         :param str|unicode body: The message body
 
         """
@@ -147,7 +149,7 @@ class AMQPAdapter(BaseAdapter):
     def consume_acknowledge(self, channel, tag):
         """Message acknowledge
 
-        :param Channel channel: Channel to acknowledge the message
+        :param pika.channel.Channel channel: Channel to acknowledge the message
         :param int tag: Message tag to acknowledge
 
         """

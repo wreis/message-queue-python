@@ -1,10 +1,10 @@
+"""Message Queue Base Adapter Interface.
+
+"""
 from abc import ABCMeta, abstractmethod
 
 
 class BaseAdapter:
-    """Message Queue Base Adapter.
-
-    """
     __metaclass__ = ABCMeta
     __name__ = 'adapter'
 
@@ -52,7 +52,7 @@ class BaseAdapter:
 
     @abstractmethod
     def consume_callback(self):
-        """Callback method to execute in the consume
+        """Callback method to execute in the consume.
 
         """
         pass

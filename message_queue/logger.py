@@ -16,19 +16,6 @@ def get(name):
     )
 
     logger.addHandler(handler)
-    logger.setLevel(args.loglevel)
 
     return logger
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    '-d', '--debug',
-    help='Debug',
-    action='store_const',
-    dest='loglevel',
-    const=logging.DEBUG,
-    default=logging.WARNING,
-)
-args = parser.parse_args()
 
