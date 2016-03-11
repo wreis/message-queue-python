@@ -1,6 +1,5 @@
-"""AMQP 0.9.1 Adapter to connect to RabbitMQ using pika
-"""
 import pika
+
 from message_queue import logger
 from message_queue.adapters import BaseAdapter
 
@@ -8,6 +7,9 @@ LOGGER = logger.get(__name__)
 
 
 class AMQPAdapter(BaseAdapter):
+    """AMQP 0.9.1 Adapter to connect to RabbitMQ using pika library.
+
+    """
     __name__ = 'amqp'
 
     def __init__(self, host='localhost', port=5672, user='guest', password='guest', vhost='/'):
@@ -61,6 +63,7 @@ class AMQPAdapter(BaseAdapter):
 
     def connect(self):
         """Connect usgin BlockingConnection.
+
         """
         try:
             self.connection = pika.BlockingConnection(self._parameters)
@@ -75,6 +78,7 @@ class AMQPAdapter(BaseAdapter):
 
     def close(self):
         """Close connection and channel.
+
         """
         self.channel.close()
         self.connection.close()
@@ -94,6 +98,7 @@ class AMQPAdapter(BaseAdapter):
         """Format message to AMQP format.
 
         :param dict message: Message to format
+
         """
         exchange = message['properties'].get('exchange', '')
         delivery_mode = message['properties'].get('delivery_mode', 2)
@@ -114,7 +119,7 @@ class AMQPAdapter(BaseAdapter):
     def consume(self, worker):
         """Consume message from the queue.
 
-        :param method consumer: Method that consume the message
+        :param function worker: Method that consume the message
 
         """
         self._consume_worker = worker
@@ -130,7 +135,10 @@ class AMQPAdapter(BaseAdapter):
     def consume_callback(self, channel, method, properties, body):
         """Message consume callback
 
-        :param method work: Work to be executed in the callback
+        :param pika.channel.Channel unused_channel: The channel object
+        :param pika.Spec.Basic.Deliver: basic_deliver method
+        :param pika.Spec.BasicProperties: properties
+        :param str|unicode body: The message body
 
         """
         self._consume_worker(channel, method, properties, body)

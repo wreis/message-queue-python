@@ -19,8 +19,8 @@ project = u'message-queue'
 copyright = u'2016, Ingresse'
 author = u'Ingresse'
 
-version = u'1.0.0'
-release = u'1.0.0'
+version = u'0.1.0'
+release = u'0.1.0'
 language = None
 
 exclude_patterns = []
@@ -29,7 +29,7 @@ todo_include_todos = False
 
 
 # -- Options for HTML output ----------------------------------------------
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 htmlhelp_basename = 'message-queuedoc'
 

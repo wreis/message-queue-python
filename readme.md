@@ -1,17 +1,17 @@
 # Message Queue Python
 
-Message Queue python library.
+Message Queue python library to publish and subscribe to queues with diferent types of adapters.
 
 
-## Install the lib
+## Current supported adapters:
+  - [RabbitMQ - AMQP 0.9.1](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
+
+
+## Install
 
 ```
 $ pip install message-queue
 ```
-
-
-## Current adapters:
-  - [RabbitMQ - AMQP 0.9.1](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
 
 
 ## Examples:
@@ -19,23 +19,49 @@ $ pip install message-queue
 Publish a message to the queue.
 
 ```
-$ python examples/publisher.py
+import message_queue
+import pika
+
+if __name__ == '__main__':
+    # Instantiate the AMQP adapter with the host configuration
+    adapter = message_queue.AMQPAdapter(host='107.23.60.208')
+    # Configurate queue
+    adapter.configurate_queue(queue='python.publish.test')
+
+    # Instantiate publisher
+    publisher = message_queue.Publisher(adapter)
+
+    # Create a new message
+    message = message_queue.Message({
+        'id': 12345,
+        'message': 'test publish'
+    })
+
+    # Publish message
+    publisher.publish(message)
 ```
 
 Subscribe to messages in the queue.
 
 ```
-$ python examples/subscriber.py
+import json
+
+import message_queue
+import pika
+
+# Create you worker method
+def my_worker(channel, method, properties, body):
+    print json.loads(body)
+
+if __name__ == '__main__':
+    # Instantiate the AMQP adapter with the host configuration
+    adapter = message_queue.AMQPAdapter(host='107.23.60.208')
+    # Configurate queue
+    adapter.configurate_queue(queue='python.publish.test')
+
+    # Instantiate subscriber
+    subscriber = message_queue.Subscriber(adapter)
+    # Consume message
+    subscriber.consume(my_worker)
 ```
-
-You can use the `--debug` flag to log some information
-
-```
-$ python examples/publish.py --debug
-```
-
-
-## Documentation
-
-Check the docs [Link]()
 
