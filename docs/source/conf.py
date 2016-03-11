@@ -19,8 +19,8 @@ project = u'message-queue'
 copyright = u'2016, Ingresse'
 author = u'Ingresse'
 
-version = u'0.1.0'
-release = u'0.1.0'
+version = u'0.1.1'
+release = u'0.1.1'
 language = None
 
 exclude_patterns = []
