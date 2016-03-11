@@ -211,3 +211,19 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+.PHONY: deploy
+deploy:
+	make clean
+	make html
+	git checkout gh-pages
+
+	cd ../ && rm -rf .gitignore examples/ license.md message_queue/
+	cd ../ && rm -rf readme.md requirements.txt setup.py
+	cd ../ && cp -r docs/build/html .
+	cd ../ && rm -rf docs
+
+	cd ../ && git add .
+	cd ../ && git commit -m ":page_facing_up: Update the docs"
+	cd ../ && git push origin gh-pages
+
