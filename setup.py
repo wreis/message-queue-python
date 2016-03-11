@@ -2,16 +2,15 @@ import setuptools
 
 setuptools.setup(
     name='message-queue',
-    version='0.1.0',
+    version='0.1.1',
     description='Message Queue',
-    long_description=open('readme.md').read(),
+    long_description='Message Queue python library to publish and subscribe to queues with diferent types of adapters.',
     url='https://github.com/ingresse/message-queue-python',
     author='Ingresse',
     author_email='vitor.leal@ingresse.com',
     license='BSD',
     packages=setuptools.find_packages(),
-    namespace_packages=['message_queue'],
-    install_requires=open('requirements.txt').read(),
-    zip_safe=True
+    install_requires=['pika'],
+    download_url = 'https://github.com/ingresse/message-queue-python/tarball/0.1.1',
 )
 
