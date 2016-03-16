@@ -9,6 +9,7 @@ Current supported adapters:
 
 * RabbitMQ - AMQP 0.9.1
 
+
 Installing message-queue
 ------------------------
 

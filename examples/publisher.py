@@ -4,7 +4,8 @@ import pika
 
 if __name__ == '__main__':
     # Instantiate the AMQP adapter with the host configuration
-    adapter = message_queue.AMQPAdapter(host='107.23.60.208')
+    adapter = message_queue.AMQPAdapter(host='192.168.99.100')
+
     # Configurate queue
     adapter.configurate_queue(queue='python.publish.test')
 
@@ -18,5 +19,6 @@ if __name__ == '__main__':
     })
 
     # Publish message
-    publisher.publish(message)
+    for i in xrange(10000):
+        publisher.publish(message)
 
