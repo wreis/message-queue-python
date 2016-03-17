@@ -1,5 +1,4 @@
 import setuptools
-import message_queue
 
 setuptools.setup(
     name='message-queue',
