@@ -11,7 +11,9 @@ setuptools.setup(
     author_email='vitor.leal@ingresse.com',
     license='BSD',
     packages=setuptools.find_packages(),
-    install_requires=['pika>=0.10.0'],
+    install_requires=open('requirements.txt').read(),
     download_url = 'https://github.com/ingresse/message-queue-python/tarball/0.1.4',
+    namespace_packages=['message_queue'],
+    zip_safe=True,
 )
 
