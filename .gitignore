@@ -8,3 +8,4 @@ build
 dist
 docs/_build
 .pypirc
+message_queue.egg-info
