@@ -46,7 +46,7 @@ class AMQPAdapter(BaseAdapter):
         if not self.queue:
             self.queue = kwargs.get('queue', '')
             self.basic_ack = kwargs.get('basic_ack', True)
-            self.prefetch_count = kwargs.get('prefetch_count', 0)
+            self.prefetch_count = kwargs.get('prefetch_count', 1)
 
             self.channel.queue_declare(
                 queue       = self.queue,
@@ -64,7 +64,7 @@ class AMQPAdapter(BaseAdapter):
                          self.queue, self.basic_ack, self.prefetch_count)
 
     def connect(self):
-        """Connect usgin BlockingConnection.
+        """Connect to AMQP server usgin BlockingConnection.
 
         """
         try:
@@ -108,7 +108,7 @@ class AMQPAdapter(BaseAdapter):
         _message = {}
         _message['body'] = message['body']
         _message['routing_key'] = self.queue
-        _message['exchange']   = exchange
+        _message['exchange'] = exchange
         _message['properties'] = pika.BasicProperties(
             content_type='application/json',
             delivery_mode=delivery_mode,
@@ -124,8 +124,8 @@ class AMQPAdapter(BaseAdapter):
         :param function worker: Method that consume the message
 
         """
-        self._consume_worker = worker
-        self.channel.basic_consume(self.consume_callback, self.queue)
+        callback = self.consume_callback(worker)
+        self.channel.basic_consume(callback, self.queue)
 
         try:
             self.channel.start_consuming()
@@ -134,24 +134,40 @@ class AMQPAdapter(BaseAdapter):
             self.channel.stop_consuming()
             self.close()
 
-    def consume_callback(self, channel, method, properties, body):
-        """Message consume callback
+    def consume_callback(self, worker):
+        """Decorate worker to exectue on consume callback.
 
-        :param pika.channel.Channel channel: The channel object
-        :param pika.Spec.Basic.Deliver method: basic_deliver method
-        :param pika.Spec.BasicProperties properties: properties
-        :param str|unicode body: The message body
+        :param function worker: Worker to execture in the consume callback
 
         """
-        self._consume_worker(channel, method, properties, body)
-        self.consume_acknowledge(channel, method.delivery_tag)
+        def callback(channel, method, properties, body):
+            """Message consume callback.
 
-    def consume_acknowledge(self, channel, tag):
-        """Message acknowledge
+            :param pika.channel.Channel channel: The channel object
+            :param pika.Spec.Basic.Deliver method: basic_deliver method
+            :param pika.Spec.BasicProperties properties: properties
+            :param str|unicode body: The message body
+
+            """
+            # Execute the worker
+            acknowledge = worker(channel, method, properties, body)
+
+            # Acknowledge the message or not
+            self._consume_acknowledge(channel, method.delivery_tag, acknowledge)
+
+        return callback
+
+    def _consume_acknowledge(self, channel, tag, acknowledge=True):
+        """Message acknowledge.
 
         :param pika.channel.Channel channel: Channel to acknowledge the message
         :param int tag: Message tag to acknowledge
+        :param bool acknowledge: If should acknowledge the message or not
 
         """
+        if acknowledge is False:
+            channel.basic_nack(delivery_tag=tag)
+            return
+
         channel.basic_ack(delivery_tag=tag)
 

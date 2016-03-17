@@ -4,11 +4,20 @@ import pika
 
 
 def my_worker(channel, method, properties, body):
-    print json.loads(body)
+    try:
+        data = json.loads(body)
+        print data
+
+    except:
+        print 'Error parsing body: %r' % body
+        # return False to not acknowledge the message
+        return False
+
 
 if __name__ == '__main__':
     # Instantiate the AMQP adapter with the host configuration
-    adapter = message_queue.AMQPAdapter(host='192.168.99.100')
+    adapter = message_queue.AMQPAdapter(host='127.0.0.1')
+
     # Configurate queue
     adapter.configurate_queue(queue='python.publish.test')
 
