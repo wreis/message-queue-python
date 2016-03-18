@@ -16,7 +16,8 @@ class Message:
         self._message['body'] = self.to_json(content)
         self._message['properties'] = kwargs
 
-    def to_json(self, content):
+    @staticmethod
+    def to_json(content):
         """Convert content to json.
 
         :param dict content: Content to encode in json format
