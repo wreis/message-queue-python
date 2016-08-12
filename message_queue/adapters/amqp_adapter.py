@@ -171,17 +171,19 @@ class AMQPAdapter(BaseAdapter):
 
         channel.basic_ack(delivery_tag=tag)
 
-    def subscribe(self, exchange, exchange_type="fanout"):
+    def subscribe(self, exchange, queue, exchange_type="fanout"):
         """Subscribes to a exchange.
 
         :param function worker: Method that consume the message
         :param string exchange: Exchange name
+        :param string exchange: Queue name
         :param string exchange_type: Exchange type
 
         """
-        self.channel.exchange_declare(exchange=exchange, exchange_type=exchange_type)
+        self.queue = queue
+        self.channel.exchange_declare(
+            exchange=exchange, exchange_type=exchange_type)
 
-        response = self.channel.queue_declare(exclusive=True)
-        self.queue = response.method.queue
+        self.channel.queue_declare(exclusive=True, queue=self.queue)
 
         self.channel.queue_bind(exchange=exchange, queue=self.queue)
