@@ -181,8 +181,14 @@ class AMQPAdapter(BaseAdapter):
 
         """
         self.queue = queue
-        self.channel.exchange_declare(
-            exchange=exchange, exchange_type=exchange_type)
+        self.channel.exchange_declare(exchange=exchange,
+            exchange_type=exchange_type,
+            passive=False,
+            durable=True,
+            auto_delete=False,
+            arguments=None
+        )
+        print "SO PRA TER CERTEZA"
 
         self.channel.queue_declare(
             queue=self.queue,
