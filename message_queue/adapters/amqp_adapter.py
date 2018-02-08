@@ -63,6 +63,23 @@ class AMQPAdapter(BaseAdapter):
             LOGGER.debug('Queue configured: queue=%r, basic_ack=%r, prefetch_count=%r',
                          self.queue, self.basic_ack, self.prefetch_count)
 
+    def configurate_exchange(self, **kwargs):
+        """Configurate the exchange.
+
+        :param string exchange: Exchange name to connect
+        :param string exchange_type: Exchange type
+
+        """
+        if not self.queue:
+            self.queue = kwargs.get('exchange', '')
+
+            self.channel.exchange_declare(
+                exchange      = self.queue,
+                exchange_type = kwargs.get('exchange_type', 'fanout')
+            )
+
+            LOGGER.debug('Exchange configured: exchange=%r', self.queue)
+
     def connect(self):
         """Connect to AMQP server usgin BlockingConnection.
 
