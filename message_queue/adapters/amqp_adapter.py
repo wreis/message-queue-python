@@ -121,6 +121,7 @@ class AMQPAdapter(BaseAdapter):
         """
         exchange = message['properties'].get('exchange', '')
         delivery_mode = message['properties'].get('delivery_mode', 2)
+        correlation_id = message['properties'].get('correlation_id', None)
 
         _message = {}
         _message['body'] = message['body']
@@ -129,6 +130,7 @@ class AMQPAdapter(BaseAdapter):
         _message['properties'] = pika.BasicProperties(
             content_type='application/json',
             delivery_mode=delivery_mode,
+            correlation_id=correlation_id,
         )
 
         LOGGER.debug('AMQP Message: %r ', _message)
