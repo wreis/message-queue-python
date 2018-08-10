@@ -212,4 +212,5 @@ class AMQPAdapter(BaseAdapter):
             arguments=kwargs.get('arguments', None)
         )
 
+        self.channel.basic_qos(prefetch_count=kwargs.get('prefetch_count', 1))
         self.channel.queue_bind(exchange=exchange, queue=self.queue)
