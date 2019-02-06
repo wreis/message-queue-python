@@ -4,6 +4,8 @@ Publish and subscribe to queues and exchanges in RabbitMQ
 
 """
 import pika
+import functools
+import threading
 
 from message_queue import logger
 from message_queue.adapters import BaseAdapter
@@ -24,6 +26,7 @@ class AMQPAdapter(BaseAdapter):
         :param string vhost: Server virutal host
 
         """
+        self.threads = []
         self.queue = None
         self._host = host
         self._credentials = pika.PlainCredentials(user, password)
@@ -143,7 +146,7 @@ class AMQPAdapter(BaseAdapter):
         :param function worker: Method that consume the message
 
         """
-        callback = self.consume_callback(worker)
+        callback = functools.partial(self.consume_callback, worker=worker)
         self.channel.basic_consume(callback, self.queue)
 
         try:
@@ -151,30 +154,41 @@ class AMQPAdapter(BaseAdapter):
 
         except KeyboardInterrupt:
             self.channel.stop_consuming()
-            self.close()
 
-    def consume_callback(self, worker):
-        """Decorate worker to exectue on consume callback.
+        for thread in self.threads:
+            thread.join()
 
+        self.close()
+
+    def consume_callback(self, channel, method, properties, body, worker):
+        """Create a new thred.
+
+        :param pika.channel.Channel channel: The channel object
+        :param pika.Spec.Basic.Deliver method: basic_deliver method
+        :param pika.Spec.BasicProperties properties: properties
+        :param str|unicode body: The message body
         :param function worker: Worker to execture in the consume callback
-
         """
-        def callback(channel, method, properties, body):
-            """Message consume callback.
+        thread = threading.Thread(target=self.do_work, args=(channel, method, properties, body, worker))
+        thread.start()
+        self.threads.append(thread)
 
-            :param pika.channel.Channel channel: The channel object
-            :param pika.Spec.Basic.Deliver method: basic_deliver method
-            :param pika.Spec.BasicProperties properties: properties
-            :param str|unicode body: The message body
+    def do_work(self, channel, method, properties, body, worker):
+        """Execute worker
 
-            """
-            # Execute the worker
-            acknowledge = worker(channel, method, properties, body)
+        :param pika.channel.Channel channel: The channel object
+        :param pika.Spec.Basic.Deliver method: basic_deliver method
+        :param pika.Spec.BasicProperties properties: properties
+        :param str|unicode body: The message body
+        :param function worker: Worker to execture in the consume callback
+        """
+        thread_id = threading.current_thread().ident
+        tag = method.delivery_tag
+        LOGGER.debug('Thread id: %r Delivery tag: %r Message body: %r', thread_id, tag, body)
 
-            # Acknowledge the message or not
-            self._consume_acknowledge(channel, method.delivery_tag, acknowledge)
-
-        return callback
+        acknowledge = worker(channel, method, properties, body)
+        callback = functools.partial(self._consume_acknowledge, channel, tag, acknowledge)
+        self.connection.add_callback_threadsafe(callback)
 
     def _consume_acknowledge(self, channel, tag, acknowledge=True):
         """Message acknowledge.
