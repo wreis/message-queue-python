@@ -32,7 +32,7 @@ setup(
     author_email='vitor.leal@ingresse.com',
     license='BSD',
     packages=find_packages(),
-    install_requires=['pika'],
+    install_requires=['pika==0.10.0'],
     download_url='https://github.com/ingresse/message-queue-python/tarball/%r'.format(VERSION),
     keywords='message queue rabbit amqp pub/sub',
 )
