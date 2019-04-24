@@ -215,7 +215,7 @@ class AMQPAdapter(BaseAdapter):
         """
         self.queue = queue
         self.channel.exchange_declare(
-            exchange=exchange, exchange_type=exchange_type)
+            exchange=exchange, exchange_type=exchange_type, routing_key=kwargs.get('routing_key', ''))
 
         self.channel.queue_declare(
             queue=self.queue,
