@@ -90,6 +90,7 @@ class AMQPAdapter(BaseAdapter):
         try:
             self.connection = pika.BlockingConnection(self._parameters)
             self.channel = self.connection.channel()
+            self.channel.confirm_delivery()
 
             LOGGER.debug('Connected')
 
